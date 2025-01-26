@@ -7,17 +7,19 @@ app.use(express.json())
     res.sendFile('C:/Users/subra/Desktop/Jspider/ExpressJS/ToDoServer/Public/index.html');
  })
  app.post('/todo/add',(req,res)=>{
-
     const task=req.body;
     const todo=JSON.parse(fs.readFileSync('./Public/todo.json',task,'utf-8'));
     todo.push(task)
     fs.writeFileSync('./Public/todo.json',JSON.stringify(todo))
-    
-
-    
+   res.send(todo)
  })
+ app.get("/todo/get", (req, res) => {
+   const todos = JSON.parse(fs.readFileSync("./Public/todo.json", "utf-8"));
+   res.status(200).send(todos)
+})
 
-app.listen(6900,"localhost",()=>{
-    console.log("App is running on http://localhost:6900");
+
+app.listen(4000,"localhost",()=>{
+    console.log("App is running on http://localhost:4000");
     
 })

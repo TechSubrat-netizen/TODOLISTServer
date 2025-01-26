@@ -6,10 +6,10 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <title>TODO List Express</title>
   </head>
-  <body class="bg-gradient-to-r from-blue-500 to-indigo-600 min-h-screen text-white font-sans">
+  <body class="bg-gradient-to-r from-blue-500 to-indigo-600 min-h-screen font-sans">
     <div class="flex flex-col items-center justify-center h-screen">
       <!-- Header -->
-      <h1 class="text-5xl font-semibold mb-10 text-black-600">TODO  LIST EXPRESS</h1>
+      <h1 class="text-5xl font-semibold mb-10 text-white">TODO  LIST EXPRESS</h1>
 
       <!-- Input Section -->
       <div class="flex bg-white p-4 rounded-xl shadow-lg w-full max-w-xl items-center justify-between mb-8">
@@ -29,14 +29,7 @@
 
       <!-- Task List -->
       <div class="bg-white w-full max-w-xl p-6 rounded-xl shadow-lg space-y-4" id="taskList">
-        <div class="flex justify-between items-center border-b-2 pb-3">
-          <h2 class="text-3xl font-medium color-blackt text-blue-600">Tasks</h2>
-          <div class="flex gap-4">
-            <button class="text-blue-600 hover:text-blue-800 transition duration-200 ">Edit</button>
-            <button class="text-red-600 hover:text-red-800 transition duration-200">Delete</button>
-          </div>
-        </div>
-
+       
        
       </div>
     </div>
@@ -44,6 +37,7 @@
         let inputTag=document.querySelector('#task')
         let addBtn=document.querySelector('#add-btn')
         const taskContainer=document.querySelector('#taskList')
+        taskContainer.innerHTML = "hello"
         addBtn.addEventListener('click',()=>{
             const text=inputTag.value;
             if(text){
@@ -58,8 +52,10 @@
                     body:JSON.stringify(task)
                 })
                 .then(res=>res.json())
-                .then(data=>console.log(data))
+                .then((data)=>{console.log(data);
+                })
                 inputTag.value=" "
+               
 
             }
             else{
@@ -78,6 +74,27 @@
         //     console.log(data);
             
         // }
+        //Display Tasks
+         function displaytasks(tasks){
+            let str=''
+            tasks.forEach(task => {
+                str+=` <div class="flex justify-between items-center border-b-2 pb-3">
+          <h2 class="text-3xl font-medium color-blackt text-blue-600">${task.text}</h2>
+          <div class="flex gap-4">
+            <button class="text-blue-600 hover:text-blue-800 transition duration-200 ">Edit</button>
+            <button class="text-red-600 hover:text-red-800 transition duration-200">Delete</button>
+          </div>
+        </div>
+`
+            });
+            taskContainer.innerHTML=str
+         }
+         window.addEventListener("load", async () => {
+             fetch("/todo/get")
+                .then(response => response.json())
+                .then(data => displaytasks(data))
+                .catch(err => console.log(err))
+        })
     </script>
   </body>
 </html>
